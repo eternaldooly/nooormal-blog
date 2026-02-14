@@ -1,0 +1,18 @@
+{% if all_tags() %}
+<section class="tag-cloud">
+    <h3 class="tag-cloud-title">Topics</h3>
+    <div class="tag-cloud-list">
+        {% for t in all_tags() %}
+        {% if active_tag and t.slug == active_tag.slug %}
+        <a href="{{ url_for('index') }}" class="tag-cloud-item active">
+            {{ t.name }} <span class="tag-count">({{ t.post_count }})</span>
+        </a>
+        {% else %}
+        <a href="{{ url_for('tag_posts', slug=t.slug) }}" class="tag-cloud-item">
+            {{ t.name }} <span class="tag-count">({{ t.post_count }})</span>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}

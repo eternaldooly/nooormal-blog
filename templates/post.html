@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - Blog{% endblock %}
+
+{% block header %}
+<header class="post-header">
+    <div class="header-wrapper">
+        <div class="post-meta-top">
+            {% for tag in tags %}
+            <a href="{{ url_for('tag_posts', slug=tag.slug) }}" class="post-tag-link">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-meta">
+            <span class="post-author">By {{ post.author_name }}</span>
+            <span class="meta-sep">&bull;</span>
+            <time datetime="{{ post.created_at }}">{{ post.created_at[:10] if post.created_at else '' }}</time>
+            <span class="meta-sep">&bull;</span>
+            <span class="reading-time">{{ post.content|reading_time }}</span>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<article class="post-content">
+    {{ post.content|markdown }}
+</article>
+
+{% if tags %}
+<div class="post-footer-tags">
+    {% for tag in tags %}
+    <a href="{{ url_for('tag_posts', slug=tag.slug) }}" class="tag-link">{{ tag.name }}</a>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="post-nav">
+    <a href="{{ url_for('index') }}" class="post-nav-link">&larr; Back to all posts</a>
+</div>
+{% endblock %}

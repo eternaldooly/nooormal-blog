@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Search{% if query %}: {{ query|e }}{% endif %} - Blog{% endblock %}
+
+{% block header %}
+<header class="site-header">
+    <div class="header-wrapper">
+        <h1 class="site-title">Search Results</h1>
+        {% if query %}
+        <p class="site-description">{{ posts|length }} result{% if posts|length != 1 %}s{% endif %} for "{{ query|e }}"</p>
+        {% endif %}
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="post-feed">
+    {% for item in posts %}
+    <article class="post-card">
+        <div class="post-card-content">
+            <header class="post-card-header">
+                {% if item.tags %}
+                <div class="post-card-tags">
+                    {% for tag in item.tags %}
+                    <a href="{{ url_for('tag_posts', slug=tag.slug) }}" class="tag-link">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <h2 class="post-card-title">
+                    <a href="{{ url_for('post_detail', slug=item.post.slug) }}">{{ item.post.title }}</a>
+                </h2>
+            </header>
+            <section class="post-card-excerpt">
+                <p>{{ item.post.excerpt }}</p>
+            </section>
+            <footer class="post-card-meta">
+                <span class="post-card-author">By {{ item.post.author_name }}</span>
+                <span class="meta-sep">&bull;</span>
+                <time class="post-card-date">{{ item.post.created_at[:10] if item.post.created_at else '' }}</time>
+            </footer>
+        </div>
+    </article>
+    {% else %}
+    <div class="no-posts">
+        {% if query %}
+        <p>No posts found for "{{ query|e }}".</p>
+        {% else %}
+        <p>Enter a search term above.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

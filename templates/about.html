@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Whoami - Blog{% endblock %}
+
+{% block header %}
+<header class="site-header">
+    <div class="header-wrapper">
+        <h1 class="site-title">Whoami</h1>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<article class="post-content page-content whoami-content">
+    {% if page %}
+        {{ page.content|markdown }}
+    {% else %}
+        <p>Whoami page content goes here.</p>
+    {% endif %}
+</article>
+{% endblock %}

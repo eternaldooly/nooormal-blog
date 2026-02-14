@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}binwalk.mind{% endblock %}
+
+{% block header %}
+<header class="site-header">
+    <div class="header-wrapper">
+        <h1 class="site-title"><a href="{{ url_for('index') }}">binwalk.mind</a></h1>
+        <p class="site-description">Learn efficiently. Learn precisely.</p>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="post-feed">
+    {% for item in posts %}
+    <article class="post-card">
+        <div class="post-card-content">
+            <header class="post-card-header">
+                {% if item.tags %}
+                <div class="post-card-tags">
+                    {% for tag in item.tags %}
+                    <a href="{{ url_for('tag_posts', slug=tag.slug) }}" class="tag-link">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <h2 class="post-card-title">
+                    <a href="{{ url_for('post_detail', slug=item.post.slug) }}">{{ item.post.title }}</a>
+                </h2>
+            </header>
+            <section class="post-card-excerpt">
+                <p>{{ item.post.excerpt }}</p>
+            </section>
+            <footer class="post-card-meta">
+                <span class="post-card-author">By {{ item.post.author_name }}</span>
+                <span class="meta-sep">&bull;</span>
+                <time class="post-card-date" datetime="{{ item.post.created_at }}">
+                    {{ item.post.created_at[:10] if item.post.created_at else '' }}
+                </time>
+                <span class="meta-sep">&bull;</span>
+                <span class="post-card-reading-time">{{ item.post.content|reading_time }}</span>
+            </footer>
+        </div>
+    </article>
+    {% else %}
+    <div class="no-posts">
+        <p>No posts yet. <a href="{{ url_for('admin_login') }}">Login</a> to create your first post.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% if total_pages > 1 %}
+<nav class="pagination">
+    {% if page > 1 %}
+    <a title="Newer Posts" class="pagination-link newer" href="{% if page == 2 %}{{ url_for('index') }}{% else %}{{ url_for('post_list', page=page-1) }}{% endif %}">
+        <svg class="icon-arrow"><use xlink:href="#icon-arrow-left"></use></svg>
+        <span class="pagination-label">Newer Posts</span>
+    </a>
+    {% endif %}
+    <span class="pagination-info">Page {{ page }} of {{ total_pages }}</span>
+    {% if page < total_pages %}
+    <a title="Older Posts" class="pagination-link older" href="{{ url_for('post_list', page=page+1) }}">
+        <span class="pagination-label">Older Posts</span>
+        <svg class="icon-arrow"><use xlink:href="#icon-arrow-right"></use></svg>
+    </a>
+    {% endif %}
+</nav>
+{% endif %}
+
+{% include '_tag_cloud.html' %}
+{% endblock %}

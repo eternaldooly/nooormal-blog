@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}404 - binwalk.mind{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-code">404</div>
+    <div class="error-msg">Page not found</div>
+    <a href="{{ url_for('index') }}" class="error-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to home
+    </a>
+</div>
+{% endblock %}

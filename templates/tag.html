@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ tag.name }} - Blog{% endblock %}
+
+{% block header %}
+<header class="site-header tag-header">
+    <div class="header-wrapper">
+        <h1 class="site-title">{{ tag.name }}</h1>
+        <p class="site-description">{{ posts|length }} post{% if posts|length != 1 %}s{% endif %} tagged with "{{ tag.name }}"</p>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="post-feed">
+    {% for item in posts %}
+    <article class="post-card">
+        <div class="post-card-content">
+            <header class="post-card-header">
+                {% if item.tags %}
+                <div class="post-card-tags">
+                    {% for t in item.tags %}
+                    <a href="{{ url_for('tag_posts', slug=t.slug) }}" class="tag-link">{{ t.name }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <h2 class="post-card-title">
+                    <a href="{{ url_for('post_detail', slug=item.post.slug) }}">{{ item.post.title }}</a>
+                </h2>
+            </header>
+            <section class="post-card-excerpt">
+                <p>{{ item.post.excerpt }}</p>
+            </section>
+            <footer class="post-card-meta">
+                <span class="post-card-author">By {{ item.post.author_name }}</span>
+                <span class="meta-sep">&bull;</span>
+                <time class="post-card-date">{{ item.post.created_at[:10] if item.post.created_at else '' }}</time>
+                <span class="meta-sep">&bull;</span>
+                <span class="post-card-reading-time">{{ item.post.content|reading_time }}</span>
+            </footer>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+{% if total_pages > 1 %}
+<nav class="pagination">
+    {% if page > 1 %}
+    <a title="Newer Posts" class="pagination-link newer" href="{{ url_for('tag_posts_page', slug=tag.slug, page=page-1) }}">
+        <svg class="icon-arrow"><use xlink:href="#icon-arrow-left"></use></svg>
+        <span class="pagination-label">Newer Posts</span>
+    </a>
+    {% endif %}
+    <span class="pagination-info">Page {{ page }} of {{ total_pages }}</span>
+    {% if page < total_pages %}
+    <a title="Older Posts" class="pagination-link older" href="{{ url_for('tag_posts_page', slug=tag.slug, page=page+1) }}">
+        <span class="pagination-label">Older Posts</span>
+        <svg class="icon-arrow"><use xlink:href="#icon-arrow-right"></use></svg>
+    </a>
+    {% endif %}
+</nav>
+{% endif %}
+
+{% include '_tag_cloud.html' %}
+{% endblock %}
