@@ -4,7 +4,7 @@ A minimal personal blog built with Flask + SQLite | [Demo](https://dooly.life/)
 
 ⚡ Lightweight | 🎨 Minimal | ✍️ Markdown | 🔒 Secure
 
-<img width="1129" height="788" alt="image" src="https://github.com/user-attachments/assets/3b19da9c-9e56-442e-958f-819e0b140092" />
+<img width="1129" height="788" alt="image" src="https://github.com/user-attachments/assets/e89125f2-b526-4fe7-aef7-2884973e4bc1" />
 
 ---
 
